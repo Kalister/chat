@@ -1,8 +1,8 @@
 import express, { Express, Request, Response } from 'express';
-import dotenv from 'dotenv';
 
 // import router from './src/routes'
 import createSocket from './src/socket'
+import dotenv from 'dotenv';
 
 dotenv.config();
 
@@ -12,7 +12,6 @@ const port = process.env.PORT;
 // app.use(router);
 
 const server = createSocket(app)
-
 
 // app.listen(port, () => {
 //   console.log(`CHAT Server is running at http://localhost:${port}`);

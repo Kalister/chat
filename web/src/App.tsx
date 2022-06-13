@@ -1,15 +1,12 @@
-import React from 'react';
-// import logo from './logo.svg';
 import './App.css';
+
 import Chat from './components/Chat';
+import React from 'react';
 
 function App() {
 
   return (
     <div className="App">
-      {/* <header className="App-header">
-        Chat
-      </header> */}
 
       <Chat/>
 
