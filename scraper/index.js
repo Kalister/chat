@@ -1,7 +1,12 @@
 const puppeteer = require('puppeteer');
 
 const HOST = 'https://www.youtube.com';
-const VIDEO = 'yjsEoVqo_f8'
+// const VIDEO = 'yjsEoVqo_f8' // intro
+// const VIDEO = 'Ua0fSrndl3o' // woznicki
+const VIDEO = 'GZx_nZ4cG7U' // hit16-2020, 2024 wyswietlenia na starcie
+
+const duration = (60 + 24) * 1000
+
 // const HOST = 'https://www.youtu.be';
 // const CHANNEL = 'SzybkiSzmal'
 
@@ -15,8 +20,8 @@ const consent = async (page) => {
     await page.waitForFunction(`document.querySelector("div.ytd-consent-bump-v2-lightbox") !== null`);
     
     // TODO check language before hand not to look for both
-    const cookieBtn2 = "//a[contains(., 'Zaakceptuj wszystko')]"
-    const cookieBtn = "//a[contains(., 'Accept all')]"
+    const cookieBtn = "//a[contains(., 'Zaakceptuj wszystko')]"
+    const cookieBtn2 = "//a[contains(., 'Accept all')]"
 
     let [button] = await page.$x(cookieBtn);
     if (!button) {
@@ -64,7 +69,7 @@ const visit = async (runner, run) => {
     // await page.screenshot({path: `screens/start-${run}-${runner}-${+(new Date)}.png`});    
 
     // watching the video
-    await page.waitForTimeout(36 * 1000)
+    await page.waitForTimeout(duration)
 
     // await page.screenshot({path: `screens/end-${run}-${runner}-${+(new Date)}.png`});    
 
@@ -93,4 +98,4 @@ const attack = async (count, runs) => {
 }
 
 // attack(10,10)
-attack(5,500)
+attack(10,50)
