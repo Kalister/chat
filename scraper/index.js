@@ -35,6 +35,7 @@ const consent = async (page) => {
 const visit = async (runner, run) => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
+    await page.setDefaultNavigationTimeout(0); 
     await page.goto(URL, { waitUntil: "domcontentloaded" });
     
     const cookies = await page.cookies()
@@ -43,14 +44,20 @@ const visit = async (runner, run) => {
 
     if (pendingConsent) {
         console.log(`${run}-${runner}: consent needed`)
-        const success = await consent(page)
 
-        if (success) {
-            console.log(`${run}-${runner}: consent done`)
-        } else {
-            await page.screenshot({path: `screens/error-${run}-${runner}-${+(new Date)}.png`});    
-            console.error(`${run}-${runner}: consent ERROR`)
+        try {
+            const success = await consent(page)
+            if (success) {
+                // console.log(`${run}-${runner}: consent done`)
+            } else {
+                await page.screenshot({path: `screens/error-${run}-${runner}-${+(new Date)}.png`});    
+                console.error(`${run}-${runner}: consent FAILED`)
+            }
+        } catch (err) {
+            console.error(`${run}-${runner}: consent ERROR:`, err.message)
+            return;// finishing run
         }
+
     }
 
     // await page.screenshot({path: `screens/start-${run}-${runner}-${+(new Date)}.png`});    
