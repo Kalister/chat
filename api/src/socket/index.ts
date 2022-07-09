@@ -58,7 +58,9 @@ const createSocket = (app: Express) => {
             socket.emit("messages", messages)
             socket.emit("user", user)
 
+
             socket.on("message", (message: string) => {
+                
                 const msg: Message = {
                     user: socket.data.user || '??',//
                     message,
