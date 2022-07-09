@@ -13,8 +13,16 @@ const URL = `${HOST}/watch?v=${VIDEO}`;
 const consent = async (page) => {
 
     await page.waitForFunction(`document.querySelector("div.ytd-consent-bump-v2-lightbox") !== null`);
-    const cookieBtn = "//a[contains(., 'Accept all')]"
-    const [button] = await page.$x(cookieBtn);
+    
+    // TODO check language before hand not to look for both
+    const cookieBtn = "//a[contains(., 'Zaakceptuj wszystko')]"
+    const cookieBtn2 = "//a[contains(., 'Accept all')]"
+
+    let [button] = await page.$x(cookieBtn);
+    if (!button) {
+        [button] = await page.$x(cookieBtn2);
+    }
+
     if (button) {
         await button.click();
         await page.waitForFunction(`document.querySelector("div.ytd-consent-bump-v2-lightbox") === null`);
@@ -40,6 +48,7 @@ const visit = async (runner, run) => {
         if (success) {
             console.log(`${run}-${runner}: consent done`)
         } else {
+            await page.screenshot({path: `screens/error-${run}-${runner}-${+(new Date)}.png`});    
             console.error(`${run}-${runner}: consent ERROR`)
         }
     }
@@ -74,4 +83,4 @@ const attack = async (count, runs) => {
 }
 
 // attack(10,10)
-attack(5,3)
+attack(10,300)
