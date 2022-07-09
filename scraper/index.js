@@ -15,11 +15,12 @@ const consent = async (page) => {
     await page.waitForFunction(`document.querySelector("div.ytd-consent-bump-v2-lightbox") !== null`);
     
     // TODO check language before hand not to look for both
-    const cookieBtn = "//a[contains(., 'Zaakceptuj wszystko')]"
-    const cookieBtn2 = "//a[contains(., 'Accept all')]"
+    const cookieBtn2 = "//a[contains(., 'Zaakceptuj wszystko')]"
+    const cookieBtn = "//a[contains(., 'Accept all')]"
 
     let [button] = await page.$x(cookieBtn);
     if (!button) {
+        console.error('WRONG LANGUAGE')
         [button] = await page.$x(cookieBtn2);
     }
 
@@ -65,9 +66,11 @@ const visit = async (runner, run) => {
     // watching the video
     await page.waitForTimeout(36 * 1000)
 
-    await page.screenshot({path: `screens/end-${run}-${runner}-${+(new Date)}.png`});    
+    // await page.screenshot({path: `screens/end-${run}-${runner}-${+(new Date)}.png`});    
 
     await browser.close();  
+
+    console.log(`DONE ${run}-${runner}`)
 }
 
 const swarm = async (count, run) => {
@@ -90,4 +93,4 @@ const attack = async (count, runs) => {
 }
 
 // attack(10,10)
-attack(10,300)
+attack(5,500)
